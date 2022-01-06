@@ -60,6 +60,19 @@
 			<value>world (look from)</value>
 		</combo>
 
+		<checkbox>
+			<name>internal-view</name>
+			<halign>fill</halign>
+			<stretch>1</stretch>
+			<height>25</height>
+			<property>/sim/fgcamera/dialogs/create-camera/internal</property>
+			<label>Internal</label>
+			<binding>
+				<command>dialog-apply</command>
+				<object-name>internal-view</object-name>
+			</binding>
+		</checkbox>
+
 	</group>
 
 	<group>
@@ -155,12 +168,24 @@
 					["world (look at)"      , "FGCamera4"],
 					["world (look from)"    , "FGCamera5"],
 				];
+
+                setprop("/sim/fgcamera/dialogs/create-camera/internal", (selected != "cockpit") ? 0 : 1 );
+				dialog_update("internal-view");
+
 				foreach(var a; types) {
 					if (selected == a[0]) {
 						(type = a[1]) and break;
 					}
 				}
 			}
+			#--------------------------------------------------
+			var dialog_update = func (dlg_obj = nil) {
+				var hash = {
+					"object-name" : dlg_obj,
+					"dialog-name" : "current-camera-settings"
+				};
+				fgcommand( "dialog-update", props.Node.new(hash) );
+			}			
 			#==================================================
 			#	Create new camera
 			#==================================================
@@ -175,10 +200,16 @@
 				camera       = cameraN.getChild("camera").getValues();
 				camera.name  = camera_name;
 				camera.type  = type;
-				camera.offsets = current_camera.offsets[0:];
+
+				#camera.offsets = current_camera.offsets[0:];
+				camera.offsets = fgcamera.manager._get_offsets();
+
 				if (type == "FGCamera5") {
 					camera.tower = set_tower(camera.tower);
 				}
+
+				camera.fov = fgcamera.manager._get_FOV();
+				camera["internal"] = getprop("/sim/fgcamera/dialogs/create-camera/internal");
 
 				append(fgcamera.cameras, camera);
 				setprop("/sim/fgcamera/current-camera/camera-id", size(fgcamera.cameras) - 1);

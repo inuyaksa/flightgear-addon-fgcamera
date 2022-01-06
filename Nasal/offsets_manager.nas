@@ -80,4 +80,13 @@ var manager = {
 		forindex (var i; cameras[current[1]].offsets)
 			cameras[current[1]].offsets[i] = offsets[i];
 	},
+
+	_get_offsets : func {
+		return offsets;
+	},
+
+	_get_FOV : func {
+		return math.round(getprop("/sim/current-view/field-of-view", 0) or 65);
+	}
+
 };

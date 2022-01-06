@@ -17,6 +17,7 @@
 		<enable-RND>1</enable-RND>
 		<enable-DHM>1</enable-DHM>
 		<fov>65</fov>
+		<internal>1</internal>
 
 		<offsets>0</offsets>
 		<offsets>0</offsets>

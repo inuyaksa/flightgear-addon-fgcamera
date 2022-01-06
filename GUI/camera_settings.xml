@@ -122,6 +122,23 @@
 
 	<hrule/>
 
+	<checkbox>
+		<name>internal-view</name>
+		<halign>left</halign>
+		<width>12</width>
+		<height>12</height>
+		<property>/sim/fgcamera/dialogs/camera-settings/internal-view</property>
+		<label>Internal view</label>
+		<binding>
+			<command>dialog-apply</command>
+			<object-name>internal-view</object-name>
+		</binding>
+		<binding>
+			<command>nasal</command>
+			<script>toggle_InternalView()</script>
+		</binding>
+	</checkbox>
+
 	<input>
 		<name>field-of-view</name>
 		<halign>left</halign>
@@ -385,6 +402,7 @@
 					[ "enable-RND"                  , c["enable-RND"]          ],
 					[ "enable-DHM"                  , c["enable-DHM"]          ],
 					[ "field-of-view"               , c.fov                    ],
+					[ "internal-view"        		, c["internal"]            ],
 					[ "movement-transition-time"    , c.movement.time          ],
 					[ "adjustment-linear-velocity"  , c.adjustment.v[0]        ],
 					[ "adjustment-angular-velocity" , c.adjustment.v[1]        ],
@@ -396,7 +414,7 @@
 			#--------------------------------------------------
 			var update_values = func {
 				foreach (var a; var data = calc_data()) { #?
-					setprop("/sim/fgcamera/dialogs/camera-settings/" ~ a[0], a[1]);
+					setprop("/sim/fgcamera/dialogs/camera-settings/" ~ a[0], a[1] or "");
 					dialog_update(a[0]);
 				}
 			}
@@ -614,6 +632,16 @@
 				var value = getprop(path);
 
 				fgcamera.cameras[id]["enable-RND"] = value;
+			}			
+			#==================================================
+			#	Toggle Internal view
+			#==================================================
+			var toggle_InternalView = func {
+				var id    = fgcamera.current[1];
+				var path  = "/sim/fgcamera/dialogs/camera-settings/internal-view";
+				var value = getprop(path);
+
+				fgcamera.cameras[id]["internal"] = value;
 			}
 			#==================================================
 			update_values();

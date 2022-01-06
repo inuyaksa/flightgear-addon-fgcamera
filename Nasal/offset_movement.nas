@@ -70,6 +70,8 @@ movement_handler = {
 #--------------------------------------------------
 	_trigger: func {
 		var camera_id = getprop ( my_node_path ~ "/current-camera/camera-id" );
+		if (camera_id == "") return;
+
 		if ( (camera_id + 1) > size(cameras) )
 			camera_id = 0;
 
@@ -80,14 +82,20 @@ movement_handler = {
 		close_dialog();
 		hide_panel();
 
-		if (popupTipF * cameras[camera_id].popupTip)
-			gui.popupTip(cameras[camera_id].name, 1);
+		var act_camera = cameras[camera_id];
+
+		if (popupTipF * act_camera.popupTip)
+			gui.popupTip(act_camera.name, 1);
 
 		me._set_from_to(view_id, camera_id);
 		me._set_view(view_id);
 		manager._reset();
 
-		setprop("/sim/current-view/field-of-view", cameras[current[1]].fov); # fix!
+		var delay = act_camera.movement.time;
+		settimer( func {
+			setprop("/sim/current-view/field-of-view", cameras[current[1]].fov); # fix!	
+			if (cameras[current[1]]["internal"] != nil) setprop("/sim/current-view/internal", cameras[current[1]]["internal"]);
+		}, (delay*0.6)); 
 
 		me._updateF = 1;
 	},

@@ -88,7 +88,7 @@ var fdm_init_listener = _setlistener("/sim/signals/fdm-initialized", func {
 	removelistener(fdm_init_listener);
 
     # user-archive & defaults
-    var welcomeSkipNode = props.globals.getNode("/sim/fgcamera/welcome-skip", 1);
+    var welcomeSkipNode = props.globals.getNode(my_node_path ~ "/welcome-skip", 1);
     welcomeSkipNode.setAttribute("userarchive", "y");
     if (welcomeSkipNode.getValue() == nil) {
       welcomeSkipNode.setValue("0");
@@ -128,12 +128,12 @@ var fdm_init_listener = _setlistener("/sim/signals/fdm-initialized", func {
 	}
 
     # setting camera-id
-	if ( getprop("/sim/fgcamera/enable") ) {
-		setprop (my_node_path ~ "/current-camera/camera-id", 1);
+	if ( getprop(my_node_path ~ "/enable") ) {
+		setprop (my_node_path ~ "/current-camera/camera-id", "");
 	}
 
     # welcome message
-    if (getprop("/sim/fgcamera/welcome-skip") != 1) {
+    if (getprop(my_node_path ~ "/welcome-skip") != 1) {
 		fgcommand("dialog-show", props.Node.new({'dialog-name':'fgcamera-welcome'}));
 	}
 });
