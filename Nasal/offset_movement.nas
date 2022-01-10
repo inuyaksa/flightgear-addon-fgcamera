@@ -12,6 +12,10 @@ movement_handler = {
 	_from   : zeros(6),
 	_to     : [],
 
+	_start_fov : 0,
+	_end_fov : 0,
+	_delta_fov : 0,
+
 	_dlg    : nil,
 #--------------------------------------------------
 	_set_tower: func (twr) {
@@ -89,11 +93,14 @@ movement_handler = {
 
 		me._set_from_to(view_id, camera_id);
 		me._set_view(view_id);
+		me._start_fov = fgcamera.manager._get_FOV();
+		me._end_fov = cameras[current[1]].fov;
+		me._delta_fov = me._end_fov - me._start_fov;
 		manager._reset();
 
 		var delay = act_camera.movement.time;
 		settimer( func {
-			setprop("/sim/current-view/field-of-view", cameras[current[1]].fov); # fix!	
+			#setprop("/sim/current-view/field-of-view", cameras[current[1]].fov); # fix!	
 			if (cameras[current[1]]["internal"] != nil) setprop("/sim/current-view/internal", cameras[current[1]]["internal"]);
 		}, (delay*0.6)); 
 
@@ -126,6 +133,8 @@ movement_handler = {
 			forindex (var i; me.offsets)
 				me.offsets[i] = me._to[i];
 
+			setprop("/sim/current-view/field-of-view",me._end_fov);
+
 			show_dialog();
 			show_panel();
 
@@ -140,6 +149,8 @@ movement_handler = {
 				}
 				me.offsets[i] = me._from[i] + me.blend * delta;
 			}
+
+			setprop("/sim/current-view/field-of-view",me._start_fov + (me.blend * me._delta_fov));
 
 			me._updateF = 1;
 		}

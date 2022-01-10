@@ -127,9 +127,9 @@ var fdm_init_listener = _setlistener("/sim/signals/fdm-initialized", func {
 		view.manager.register(a, fgcamera_view_handler);
 	}
 
-    # setting camera-id
+    # init camera-id
 	if ( getprop(my_node_path ~ "/enable") ) {
-		setprop (my_node_path ~ "/current-camera/camera-id", "");
+		setprop (my_node_path ~ "/current-camera/camera-id", 0);
 	}
 
     # welcome message

@@ -9,7 +9,7 @@
     <addon>
         <identifier type="string">a.marius.FGCamera</identifier>
         <name type="string">FGCamera</name>
-        <version type="string">1.2.3</version>
+        <version type="string">1.3.3</version>
 
         <authors>
             <author>
@@ -32,7 +32,7 @@
             </maintainer>
         </maintainers>
 
-        <short-description type="string">Add-on to define custom camera views and quickly switch between them</short-description>
+        <short-description type="string">Custom camera views and quickly switch between them (enhanced version)</short-description>
         <long-description type="string">This add-on enables user to define custom camera views with different view modifications (e.g. head shake) and quickly switch between them using keyboard shortcuts.</long-description>
 
         <localized>

@@ -86,7 +86,9 @@ var manager = {
 	},
 
 	_get_FOV : func {
-		return math.round(getprop("/sim/current-view/field-of-view", 0) or 65);
+		var fov = getprop("/sim/current-view/field-of-view", 0) or 65;
+		fov = math.round(fov * 10)/10;
+		return fov;
 	}
 
 };
