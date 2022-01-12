@@ -27,7 +27,7 @@
 		<offsets>0</offsets>
 
 		<adjustment>
-			<v>0.1</v>
+			<v>1</v>
 			<v>30.0</v>
 			<filter>0.2</filter>
 		</adjustment>

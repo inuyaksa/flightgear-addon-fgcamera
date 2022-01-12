@@ -32,20 +32,25 @@ var show_panel = func() {
 
 var show_panel_path = func(path) {
 	if ( !cameras[current[1]]["panel-show"] ) {
-		return;
+	  return;
 	}
 
 	if (path == nil or path == "") {
 		path = "generic-vfr-panel";
 	}
 
-	path = "Aircraft/Panels/" ~ path ~ ".xml";
+	path = "/Aircraft/Panels/" ~ path ~ ".xml";
 
 	setprop("/sim/panel/path", path);
+	#setprop("/sim/panel/hide-nonzero-heading-offset", 0);
+	#setprop("/sim/panel/hide-nonzero-view", 0);
 	setprop("/sim/panel/visibility", 1);
 }
 #--------------------------------------------------
-var hide_panel = func { setprop("/sim/panel/visibility", 0) }
+var hide_panel = func { 
+	setprop("/sim/panel/visibility", 0) 
+	#props.globals.getNode("/sim").removeChild("panel",0);
+}
 var check_helicopter = func props.globals.getNode("/rotors/main/torque", 0, 0) != nil ? 1 : 0;
 
 #==================================================
@@ -129,7 +134,7 @@ var fdm_init_listener = _setlistener("/sim/signals/fdm-initialized", func {
 
     # init camera-id
 	if ( getprop(my_node_path ~ "/enable") ) {
-		setprop (my_node_path ~ "/current-camera/camera-id", 0);
+		setprop (my_node_path ~ "/current-camera/camera-id", -1); # don't set any view
 	}
 
     # welcome message

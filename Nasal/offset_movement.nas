@@ -74,7 +74,11 @@ movement_handler = {
 #--------------------------------------------------
 	_trigger: func {
 		var camera_id = getprop ( my_node_path ~ "/current-camera/camera-id" );
-		if (camera_id == "") return;
+
+		if (camera_id == -1) return;
+
+		close_dialog();
+		hide_panel();
 
 		if ( (camera_id + 1) > size(cameras) )
 			camera_id = 0;
@@ -82,9 +86,6 @@ movement_handler = {
 		var view_id = view.indexof(cameras[camera_id].type);
 
 		#timeF = (cameras[current[1]].category == cameras[camera_id].category);
-
-		close_dialog();
-		hide_panel();
 
 		var act_camera = cameras[camera_id];
 
